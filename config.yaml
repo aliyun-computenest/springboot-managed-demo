@@ -1,0 +1,97 @@
+Service:
+  RegionId: cn-hangzhou
+  DeployType: ros
+  TenantType: SingleTenant
+  DeployMetadata:
+    ServiceInstanceNameRule:
+      Prefix: sp
+    SupplierDeployMetadata:
+      RoleName: ${RoleName}
+      SupplierTemplateConfigs:
+        - Name: 单机版
+          Url: 'templates/template.yaml'
+          PredefinedParameters:
+            - Name: 低配版
+              Parameters:
+                EcsInstanceType: ecs.c6.large
+              Type: Noraml
+              OrderList:
+                - EcsInstanceType
+            - Name: 基础版
+              Parameters:
+                EcsInstanceType: ecs.c6.xlarge
+              Type: Noraml
+              OrderList:
+                - EcsInstanceType
+            - Name: 高配版
+              Parameters:
+                EcsInstanceType: ecs.c6.2xlarge
+              Type: Noraml
+              OrderList:
+                - EcsInstanceType
+          HiddenParameterKeys:
+            - EcsIntanceType
+            - VpcId
+            - VSwitchId
+          ParameterMappings:
+            - ParameterKey: RegionId
+              ParameterMappingKeys:
+                - VpcId
+              ParameterValueMapping:
+                cn-hangzhou:
+                  Parameters:
+                    VpcId: ${VpcId}
+                  ParameterMappings:
+                    - ParameterKey: ZoneId
+                      ParameterMappingKeys:
+                        - VSwitchId
+                      ParameterValueMapping:
+                        ${ZoneId}:
+                          Parameters:
+                            VSwitchId: ${VSwitchId}
+      FileArtifactRelation:
+        '{{ computenest::file::springboot }}':
+          ArtifactId: ${Artifact.Artifact_1.ArtifactId}
+          ArtifactVersion: ${Artifact.Artifact_1.ArtifactVersion}
+    TemplateConfigs:
+      - Name: 单机版
+        Url: 'templates/parameters.yaml'
+        AllowedRegions:
+          - cn-hangzhou
+        PredefinedParameters:
+        - Name: 低配版
+          Parameters:
+            EcsInstanceType: ecs.c6.large
+          Type: Noraml
+          OrderList:
+            - EcsInstanceType
+        - Name: 基础版
+          Parameters:
+            EcsInstanceType: ecs.c6.xlarge
+          Type: Noraml
+          OrderList:
+            - EcsInstanceType
+        - Name: 高配版
+          Parameters:
+            EcsInstanceType: ecs.c6.2xlarge
+          Type: Noraml
+          OrderList:
+            - EcsInstanceType
+    NetworkMetadata:
+      EnablePrivateVpcConnection: false
+  ServiceType: managed
+  ServiceInfo:
+    Locale: zh-CN
+    ShortDescription: springboot demo
+    Image: 'icons/service_logo.png'
+    Name: SpringBoot单机托管版
+  ShareType: Public
+  ApprovalType: Manual
+Artifact:
+  Artifact_1:
+    ArtifactType: File
+    ArtifactName: SpringBootPackage
+    Description: 这是一个使用SpringBoot的测试包
+    ArtifactProperty:
+      RegionId: cn-hangzhou
+      Url: 'artifacts/package.tgz'

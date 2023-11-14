@@ -12,21 +12,18 @@ Service:
           Url: 'templates/template.yaml'
           PredefinedParameters:
             - Name: 低配版
-              Description: 该套餐采用了2vCPU 4GB内存的ECS实例（ecs.c6.large），系统盘采用200G的cloud_essd，可以满足基本的业务需求。
               Parameters:
                 EcsInstanceType: ecs.c6.large
               Type: Noraml
               OrderList:
                 - EcsInstanceType
             - Name: 基础版
-              Description: 该套餐采用了4vCPU 8GB内存的ECS实例（ecs.c6.xlarge），系统盘采用200G的cloud_essd，该配置可以满足大部分的业务需求。
               Parameters:
                 EcsInstanceType: ecs.c6.xlarge
               Type: Noraml
               OrderList:
                 - EcsInstanceType
             - Name: 高配版
-              Description: 该套餐采用了8vCPU 16GB内存的ECS实例（ecs.c6.2xlarge），系统盘采用200G的cloud_essd，该配置使用了更高规格ECS，进一步提升了整体稳定性和性能。
               Parameters:
                 EcsInstanceType: ecs.c6.2xlarge
               Type: Noraml
@@ -60,20 +57,20 @@ Service:
           - cn-hangzhou
         PredefinedParameters:
         - Name: 低配版
-          Parameters:
-            EcsInstanceType: ecs.c6.large
+          Parameters: {}
+          Description: 该套餐采用了2vCPU 4GB内存的ECS实例（ecs.c6.large），系统盘采用200G的cloud_essd，可以满足基本的业务需求。
           Type: Noraml
           OrderList:
             - EcsInstanceType
         - Name: 基础版
-          Parameters:
-            EcsInstanceType: ecs.c6.xlarge
+          Parameters: {}
+          Description: 该套餐采用了4vCPU 8GB内存的ECS实例（ecs.c6.xlarge），系统盘采用200G的cloud_essd，该配置可以满足大部分的业务需求。
           Type: Noraml
           OrderList:
             - EcsInstanceType
         - Name: 高配版
-          Parameters:
-            EcsInstanceType: ecs.c6.2xlarge
+          Parameters: {}
+          Description: 该套餐采用了8vCPU 16GB内存的ECS实例（ecs.c6.2xlarge），系统盘采用200G的cloud_essd，该配置使用了更高规格ECS，进一步提升了整体稳定性和性能。
           Type: Noraml
           OrderList:
             - EcsInstanceType

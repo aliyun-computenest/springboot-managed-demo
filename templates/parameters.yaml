@@ -3,18 +3,18 @@ Description:
   en: Spring boot Demo
   zh-cn:  Spring boot Demo
 Parameters:
-  EcsInstanceType:
-    Type: String
-    Label:
-      en: Instance Type
-      zh-cn: 实例类型
-    AssociationProperty: ALIYUN::ECS::Instance::InstanceType
-    AssociationPropertyMetadata:
-      InstanceChargeType: ${PayType}
-    AllowedValues:
-      - ecs.c6.large
-      - ecs.c6.xlarge
-      - ecs.c6.2xlarge
+#  EcsInstanceType:
+#    Type: String
+#    Label:
+#      en: Instance Type
+#      zh-cn: 实例类型
+#    AssociationProperty: ALIYUN::ECS::Instance::InstanceType
+#    AssociationPropertyMetadata:
+#      InstanceChargeType: ${PayType}
+#    AllowedValues:
+#      - ecs.c6.large
+#      - ecs.c6.xlarge
+#      - ecs.c6.2xlarge
   InstancePassword:
     NoEcho: true
     Type: String
@@ -31,22 +31,11 @@ Parameters:
     MinLength: 8
     MaxLength: 30
     AssociationProperty: ALIYUN::ECS::Instance::Password
-  # 可用区
-  ZoneId:
-    Type: String
-    AssociationProperty: ALIYUN::ECS::Instance:ZoneId
-    Label:
-      en: VSwitch Available Zone
-      zh-cn: 可用区
 Metadata:
   ALIYUN::ROS::Interface:
     ParameterGroups:
       - Parameters:
-          - EcsInstanceType
+#          - EcsInstanceType
           - InstancePassword
         Label:
           default: 资源配置
-      - Parameters:
-          - ZoneId
-        Label:
-          default: 可用区配置

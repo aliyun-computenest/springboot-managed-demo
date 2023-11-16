@@ -1,24 +1,49 @@
-# Demo服务实例部署文档
+# 服务模版说明文档
 
-## 概述
+## 服务说明
 
-`(服务概述内容)`。
+本文介绍基于SpringBoot软件包快速构建托管版单租计算巢服务，关于计算巢托管版可以参考[帮助文档](https://help.aliyun.com/zh/compute-nest/create-a-fully-managed-service?spm=a2c4g.11174283.0.i5)，
+本示例对应的git地址为：[springboot-managed-demo](https://github.com/aliyun-computenest/springboot-managed-demo)
+。根据该服务模板构建的服务默认包含三种套餐：
 
-```
-eg：
+| 套餐名 | ECS规格族         | vCPU与内存          | 系统盘               | 公网带宽      |
+|-----|----------------|------------------|-------------------|-----------|
+| 低配版 | ecs.c6.large   | 内存型c6，2vCPU 4GiB | ESSD云盘 200GiB PL0 | 固定带宽1Mbps |
+| 基础版 | ecs.c6.xlarge  | 内存型c6，4vCPU 8GiB | ESSD云盘 200GiB PL0 | 固定带宽1Mbps |
+| 高配版 | ecs.c6.2xlarge | 内存型c6，4vCPU 8GiB | ESSD云盘 200GiB PL0 | 固定带宽1Mbps |
 
-Demo服务是计算巢提供的示例。
-本文向您介绍如何开通计算巢上的`Demo`服务，以及部署流程和使用说明。
-```
+本示例会自动的构建计算巢服务，具体的服务构建流程为
 
-## 计费说明
+1. 上传文件并构建计算巢文件部署物
+2. 创建计算巢服务并关联文件部署物
 
-`(计费说明内容)`
+创建过程大约持续2分钟，当服务变成待提交后构建成功
 
-```
-eg:
+## 服务架构
 
-Demo在计算巢上的费用主要涉及：
+本部署架构为单机ecs部署，通过公网ip 8080端口访问
+![image.png](springboot架构图.png)
+
+## 服务构建计费说明
+
+测试本服务构建无需任何费用，创建服务实例涉及的费用参考服务实例计费说明
+
+## RAM账号所需权限
+
+本服务需要对ECS、VPC等资源进行访问和创建操作，若您使用RAM用户创建服务实例，需要在创建服务实例前，对使用的RAM用户的账号添加相应资源的权限。添加RAM权限的详细操作，请参见[为RAM用户授权](https://help.aliyun.com/document_detail/121945.html)
+。所需权限如下表所示。
+
+| 权限策略名称                              | 备注                          |
+|-------------------------------------|-----------------------------|
+| AliyunECSFullAccess                 | 管理云服务器服务（ECS）的权限            |
+| AliyunVPCFullAccess                 | 管理专有网络（VPC）的权限              |
+| AliyunROSFullAccess                 | 管理资源编排服务（ROS）的权限            |
+| AliyunComputeNestUserFullAccess     | 管理计算巢服务（ComputeNest）的用户侧权限  |
+| AliyunComputeNestSupplierFullAccess | 管理计算巢服务（ComputeNest）的服务商侧权限 |
+
+## 服务实例计费说明
+
+由于本服务式托管版服务，资源属于服务商，所以创建服务实例的费用由服务商承担，主要涉及：
 
 - 所选vCPU与内存规格
 - 系统盘类型及容量
@@ -29,103 +54,201 @@ Demo在计算巢上的费用主要涉及：
 - 按量付费（小时）
 - 包年包月
 
-目前提供如下实例：
+目前提供如下套餐：
 
-| 规格族 | vCPU与内存 | 系统盘 | 公网带宽 |
-| --- | --- | --- | --- |
-| ecs.r6.xlarge | 内存型r6，4vCPU 32GiB | ESSD云盘 200GiB PL0 | 固定带宽1Mbps |
+| 套餐名 | ECS规格族         | vCPU与内存          | 系统盘               | 公网带宽      |
+|-----|----------------|------------------|-------------------|-----------|
+| 低配版 | ecs.c6.large   | 内存型c6，2vCPU 4GiB | ESSD云盘 200GiB PL0 | 固定带宽1Mbps |
+| 基础版 | ecs.c6.xlarge  | 内存型c6，4vCPU 8GiB | ESSD云盘 200GiB PL0 | 固定带宽1Mbps |
+| 高配版 | ecs.c6.2xlarge | 内存型c6，4vCPU 8GiB | ESSD云盘 200GiB PL0 | 固定带宽1Mbps |
 
-预估费用在创建实例时可实时看到。
-如需更多规格、其他服务（如集群高可用性要求、企业级支持服务等），请联系我们 [mailto:xx@xx.com](mailto:xx@xx.com)。
+## 服务实例部署流程
 
-```
+### 部署参数说明
 
-## 部署架构
-
-`(部署概述内容)`
-
-## RAM账号所需权限
-
-`(权限策略内容)`
-
-```
-eg: 
-
-Demo服务需要对ECS、VPC等资源进行访问和创建操作，若您使用RAM用户创建服务实例，需要在创建服务实例前，对使用的RAM用户的账号添加相应资源的权限。添加RAM权限的详细操作，请参见[为RAM用户授权](https://help.aliyun.com/document_detail/121945.html)。所需权限如下表所示。
-
-
-| 权限策略名称 | 备注 |
-| --- | --- |
-| AliyunECSFullAccess | 管理云服务器服务（ECS）的权限 |
-
-```
-
-## 部署流程
+| 参数项  | 说明                                                   |
+|------|------------------------------------------------------|
+| 实例密码 | 服务器登录密码,长度8-30，必须包含三项（大写字母、小写字母、数字、 ()`~!@#$%^&*_-+= |{}[]:;'<>,.?/ 中的特殊符号） |
 
 ### 部署步骤
 
-`(部署步骤内容)`
+0. 部署链接
+   ![image.png](部署链接.png)
+1. 单击部署链接，进入服务实例部署界面，根据界面提示，填写参数。
+   ![image.png](部署参数.png)
+2. 确认参数后点击**立即创建**。
+   ![image.png](立即创建.png)
+3. 租户创建出新的服务实例，处于待部署状态，需要服务商确认后才可以进入部署流程。
+   ![image.png](待部署.png)
+4. 服务商点击**部署**。
+   ![image.png](服务商确认部署.png)
+5. 随后该服务实例处于"部署中"状态。
+   ![image.png](部署中.png)
+6. 等待部署完成后就可以开始使用服务，进入服务实例详情点击visitUrl。
+   ![image.png](使用服务.png)
+5. 返回结果
+   ![image.png](结果.png)
+
+## 服务详细说明
+
+本文通过将[代码](https://atomgit.com/flow-example/spring-boot)
+构建后，将deploy.sh和application.jar打包成package.tgz，通过计算巢部署物上传为文件部署物，并分发生成SpringBootPackage，然后在模版中ALIYUN::
+ECS::RunCommand执行命令
 
 ```
-eg:
-
-1. 单击部署链接，进入服务实例部署界面，根据界面提示，填写参数完成部署。
-2. 补充示意图。
-```
-### 部署参数说明
-
-`(部署参数说明内容)`
-
-```
-eg:
-
-您在创建服务实例的过程中，需要配置服务实例信息。下文介绍云XR实时渲染平台服务实例输入参数的详细信息。
-
-| 参数组 | 参数项 | 示例 | 说明 |
-| --- | --- | --- | --- |
-| 服务实例名称 |  | test | 实例的名称 |
-| 地域 |  | 华北2（北京） | 选中服务实例的地域，建议就近选中，以获取更好的网络延时。 |
+yum install -y java
+mkdir -p /home/admin/application
+cd /home/admin/application
+wget '{{ computenest::file::springboot }}' -O package.tgz
+tar xvf package.tgz
+/bin/bash deploy.sh start
 ```
 
-### 验证结果
+{{ computenest::file::springboot }} 为占位符，会由计算巢服务替换成文件部署物SpringBootPackage的http下载地址
 
-`(验证结果内容)`
+templates/template.yaml主要由三部分组成
 
-```
-eg:
-
-1. 查看服务实例。服务实例创建成功后，部署时间大约需要2分钟。部署完成后，页面上可以看到对应的服务实例。 
-2. 通过服务实例访问TuGraph。进入到对应的服务实例后，可以在页面上获取到web、rpc、ssh共3种使用方式。
-```
-
-### 使用Demo
-
-`(服务使用说明内容)`
+1. Parameters定义需要用户填写的参数，包括付费类型，实例规格和实例密码可用区参数
 
 ```
-eg:
-
-请访问Demo官网了解如何使用：[使用文档](https://www.aliyun.com)
+EcsInstanceType:
+ Type: String
+ Label:
+   en: Instance Type
+   zh-cn: 实例类型
+ AssociationProperty: ALIYUN::ECS::Instance::InstanceType
+ AssociationPropertyMetadata:
+   InstanceChargeType: ${PayType}
+ AllowedValues:
+   - ecs.c6.large
+   - ecs.c6.xlarge
+   - ecs.c6.2xlarge
+InstancePassword:
+ NoEcho: true
+ Type: String
+ Description:
+   en: Server login password, Length 8-30, must contain three(Capital letters, lowercase letters, numbers, ()`~!@#$%^&*_-+=|{}[]:;'<>,.?/ Special symbol in)
+   zh-cn: 服务器登录密码,长度8-30，必须包含三项（大写字母、小写字母、数字、 ()`~!@#$%^&*_-+=|{}[]:;'<>,.?/ 中的特殊符号）
+ AllowedPattern: '^[a-zA-Z0-9-\(\)\`\~\!\@\#\$\%\^\&\*\_\-\+\=\|\{\}\[\]\:\;\<\>\,\.\?\/]*$'
+ Label:
+   en: Instance Password
+   zh-cn: 实例密码
+ ConstraintDescription:
+   en: Length 8-30, must contain three(Capital letters, lowercase letters, numbers, ()`~!@#$%^&*_-+=|{}[]:;'<>,.?/ Special symbol in)
+   zh-cn: 长度8-30，必须包含三项（大写字母、小写字母、数字、 ()`~!@#$%^&*_-+=|{}[]:;'<>,.?/ 中的特殊符号）
+ MinLength: 8
+ MaxLength: 30
+ AssociationProperty: ALIYUN::ECS::Instance::Password
+# 可用区
+ZoneId:
+ Type: String
+ AssociationProperty: ALIYUN::ECS::Instance:ZoneId
+ Label:
+   en: VSwitch Available Zone
+   zh-cn: 可用区
+VpcId:
+ AssociationProperty: ALIYUN::ECS::VPC::VPCId
+ Type: String
+ Label:
+   en: VPC ID
+   zh-cn: 专有网络VPC实例ID
+# 交换机实例ID
+VSwitchId:
+ AssociationProperty: ALIYUN::ECS::VSwitch::VSwitchId
+ AssociationPropertyMetadata:
+   VpcId: ${VpcId}
+   ZoneId: ${ZoneId}
+ Type: String
+ Label:
+   en: VSwitch ID
+   zh-cn: 交换机实例ID
 ```
 
-## 问题排查
-
-`(服务使用说明内容)`
+2. Resources定义需要开的资源，包括新开的vpc, vswitch和ecs实例, 以及执行命令的定义
 
 ```
-eg:
-
-请访问[Demo的问题排查链接](https://www.aliyun.com)获取帮助。
+SecurityGroup:
+ Type: ALIYUN::ECS::SecurityGroup
+ Properties:
+   SecurityGroupName:
+     Ref: ALIYUN::StackName
+   VpcId:
+     Ref: VpcId
+   # 安全组入端口
+   SecurityGroupIngress:
+     - PortRange: 8080/8080
+       Priority: 1
+       SourceCidrIp: 0.0.0.0/0
+       IpProtocol: tcp
+       NicType: internet
+InstanceGroup:
+ Type: ALIYUN::ECS::InstanceGroup
+ Properties:
+   # 付费类型
+   InstanceChargeType: PostPaid
+   VpcId:
+     Ref: VpcId
+   VSwitchId:
+     Ref: VSwitchId
+   SecurityGroupId:
+     Ref: SecurityGroup
+   ZoneId:
+     Ref: ZoneId
+   ImageId: centos_7_8_x64_20G_alibase_20211130.vhd
+   Password:
+     Ref: InstancePassword
+   InstanceType:
+     Ref: EcsInstanceType
+   SystemDiskCategory: cloud_essd
+   SystemDiskSize: 200
+   InternetMaxBandwidthOut: 1
+   IoOptimized: optimized
+   MaxAmount: 1
+InstallPackage:
+ Type: ALIYUN::ECS::RunCommand
+ Properties:
+   InstanceIds:
+     Fn::GetAtt:
+     - InstanceGroup
+     - InstanceIds
+   Type: RunShellScript
+   Sync: true
+   Timeout: 3600
+   CommandContent:
+     Fn::Sub:
+       - |
+         #!/bin/bash
+         yum install -y java
+         mkdir -p /home/admin/application
+         cd /home/admin/application
+         wget '{{ computenest::file::springboot }}' -O package.tgz
+         tar xvf package.tgz
+         /bin/bash deploy.sh start
+       - AccountId:
+           Ref: ALIYUN::TenantId
 ```
 
-## 联系我们
+3. Outputs定义需要最终在计算巢概览页中对用户展示的输出
 
-欢迎访问Demo官网（[https://www.aliyun.com](https://www.aliyun.com)）了解更多信息。
+```
+Outputs:
+  VisitUrl:
+    Description:
+      en: VisitUrl.
+      zh-cn: 访问页面。
+    Value:
+      Fn::Sub:
+      - http://${Address}:8080
+      - Address:
+          Fn::Select:
+          - 0
+          - Fn::GetAtt:
+            - InstanceGroup
+            - PublicIps
+```
 
-联系邮箱：[https://www.aliyun.com](mailto:https://www.aliyun.com)
+## 其他
 
-社区版开源地址：[https://github.com/](https://github.com/)
+[实例代码源地址](https://atomgit.com/flow-example/spring-boot)
 
-扫码关注微信公众号，技术博客、活动通知不容错过：
-
-`(添加二维码图片)`
+[软件包package.tgz构建流程参考](https://help.aliyun.com/document_detail/153848.html)

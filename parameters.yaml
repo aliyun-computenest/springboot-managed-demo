@@ -35,6 +35,11 @@ Metadata:
     # 定义资源分组，创建服务实例时，同一分组的参数分布在一起
     ParameterGroups:
       - Parameters:
+          - RoleName
+        Label:
+          en: Basic Configuration
+          zh-cn: 基础配置
+      - Parameters:
           - ZoneId
           - VpcId
           - VSwitchId

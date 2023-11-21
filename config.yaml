@@ -79,9 +79,6 @@ Service:
       EnablePrivateVpcConnection: false
   ServiceType: managed
   OperationMetadata:
-    PrometheusConfigMap:
-      单机版:
-        EnablePrometheus: false
     ModifyParametersConfig:
       - TemplateName: 单机版
         Operation:

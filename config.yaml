@@ -78,6 +78,18 @@ Service:
     NetworkMetadata:
       EnablePrivateVpcConnection: false
   ServiceType: managed
+  OperationMetadata:
+    PrometheusConfigMap:
+      单机版:
+        EnablePrometheus: false
+    ModifyParametersConfig:
+      - TemplateName: 单机版
+        Operation:
+          - Name: 变配套餐
+            Description: 变配套餐
+            Type: Custom
+            SupportPredefinedParameters: true
+            EnableLogging: false
   ServiceInfo:
     Locale: zh-CN
     ShortDescription: springboot demo

@@ -90,6 +90,13 @@ Service:
             Type: Custom
             SupportPredefinedParameters: true
             EnableLogging: false
+    StatusOperationConfigs:
+      - TemplateName: 单机版
+        DeployScene: ECS
+        SupportOperations:
+          - Start
+          - Stop
+          - Restart
   ServiceInfo:
     Locale: zh-CN
     ShortDescription: springboot demo

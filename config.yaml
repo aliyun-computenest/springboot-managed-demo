@@ -1,16 +1,18 @@
 Service:
-  RegionId: cn-hangzhou
+  RegionId: ap-southeast-1
   DeployType: ros
   TenantType: SingleTenant
   DeployMetadata:
     ServiceInstanceNameRule:
-      Prefix: sp
+      Prefix: sp-
     SupplierDeployMetadata:
       UserType: Aliyun
       RoleName: ${RoleName}
       SupplierTemplateConfigs:
         - Name: 单机版
-          Url: 'templates/template.yaml'
+          Url: 'ros_templates/template.yaml'
+          AllowedRegions:
+            - ap-southeast-1
           PredefinedParameters:
             - Name: 低配版
               Description: 该套餐采用了2vCPU 4GB内存的ECS实例（ecs.c6.large），系统盘采用200G的cloud_essd，可以满足基本的业务需求。
@@ -45,7 +47,7 @@ Service:
                 - ZoneId
                 - VSwitchId
               ParameterValueMapping:
-                cn-hangzhou:
+                ap-southeast-1:
                   Parameters:
                     VpcId: ${VpcId}
                     ZoneId: ${ZoneId}
@@ -54,30 +56,6 @@ Service:
         '{{ computenest::file::springboot }}':
           ArtifactId: ${Artifact.Artifact_1.ArtifactId}
           ArtifactVersion: ${Artifact.Artifact_1.ArtifactVersion}
-    TemplateConfigs:
-      - Name: 单机版
-        Url: 'templates/parameters.yaml'
-        AllowedRegions:
-          - cn-hangzhou
-        PredefinedParameters:
-        - Name: 低配版
-          Parameters: {}
-          Description: 该套餐采用了2vCPU 4GB内存的ECS实例（ecs.c6.large），系统盘采用200G的cloud_essd，可以满足基本的业务需求。
-          Type: Normal
-          OrderList:
-            - EcsInstanceType
-        - Name: 基础版
-          Parameters: {}
-          Description: 该套餐采用了4vCPU 8GB内存的ECS实例（ecs.c6.xlarge），系统盘采用200G的cloud_essd，该配置可以满足大部分的业务需求。
-          Type: Normal
-          OrderList:
-            - EcsInstanceType
-        - Name: 高配版
-          Parameters: {}
-          Description: 该套餐采用了8vCPU 16GB内存的ECS实例（ecs.c6.2xlarge），系统盘采用200G的cloud_essd，该配置使用了更高规格ECS，进一步提升了整体稳定性和性能。
-          Type: Normal
-          OrderList:
-            - EcsInstanceType
     NetworkMetadata:
       EnablePrivateVpcConnection: false
   ServiceType: managed
@@ -100,7 +78,7 @@ Service:
   ServiceInfo:
     Locale: zh-CN
     ShortDescription: springboot demo
-    Image: 'icons/service_logo.png'
+    Image: 'resources/icons/service_logo.png'
     Name: SpringBoot单机托管版
   ShareType: Public
   ApprovalType: Manual
@@ -110,5 +88,5 @@ Artifact:
     ArtifactName: SpringBootPackage
     Description: 这是一个使用SpringBoot的测试包
     ArtifactProperty:
-      RegionId: cn-hangzhou
-      Url: 'artifacts/package.tgz'
+      RegionId: ap-southeast-1
+      Url: 'resources/artifact_resources/file/package.tgz'

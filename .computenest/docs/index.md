@@ -22,7 +22,7 @@
 ## 服务架构
 
 本部署架构为单机ecs部署，通过公网ip 8080端口访问
-![image.png](springboot架构图.png)
+![image.png](architecture.png)
 
 ## 服务构建计费说明
 

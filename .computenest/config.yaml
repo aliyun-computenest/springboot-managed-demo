@@ -59,6 +59,8 @@ Service:
     NetworkMetadata:
       EnablePrivateVpcConnection: false
   ServiceType: managed
+  IsSupportOperated: true
+  PolicyNames: AliyunComputeNestPolicyForOperation
   OperationMetadata:
     ModifyParametersConfig:
       - TemplateName: 单机版

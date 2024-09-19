@@ -56,6 +56,9 @@ Service:
         '{{ computenest::file::springboot }}':
           ArtifactId: ${Artifact.Artifact_1.ArtifactId}
           ArtifactVersion: ${Artifact.Artifact_1.ArtifactVersion}
+    TemplateConfigs:
+      - Name: 单机版
+        ArchitectureDiagramUrl: 'docs/architecture.png'
     NetworkMetadata:
       EnablePrivateVpcConnection: false
   ServiceType: managed

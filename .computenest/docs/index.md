@@ -4,7 +4,7 @@
 
 本文介绍基于SpringBoot软件包快速构建托管版单租计算巢服务，关于计算巢托管版可以参考[帮助文档](https://help.aliyun.com/zh/compute-nest/create-a-fully-managed-service?spm=a2c4g.11174283.0.i5)，
 本示例对应的git地址为：[springboot-managed-demo](https://github.com/aliyun-computenest/springboot-managed-demo)
-。根据该服务模板构建的服务默认包含三种套餐：
+根据该服务模板构建的服务默认包含三种套餐：
 
 | 套餐名 | ECS规格族         | vCPU与内存          | 系统盘               | 公网带宽      |
 |-----|----------------|------------------|-------------------|-----------|

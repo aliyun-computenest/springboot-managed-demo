@@ -1,7 +1,4 @@
 ROSTemplateFormatVersion: '2015-09-01'
-Description:
-  en: Spring boot Demo
-  zh-cn:  Spring boot Demo
 Parameters:
   EcsInstanceType:
     Type: String
@@ -9,8 +6,6 @@ Parameters:
       en: Instance Type
       zh-cn: 实例类型
     AssociationProperty: ALIYUN::ECS::Instance::InstanceType
-    AssociationPropertyMetadata:
-      InstanceChargeType: ${PayType}
     AllowedValues:
       - ecs.c6.large
       - ecs.c6.xlarge

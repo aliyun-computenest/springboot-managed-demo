@@ -30,16 +30,6 @@
 
 ## RAM账号所需权限
 
-本服务需要对ECS、VPC等资源进行访问和创建操作，若您使用RAM用户创建服务实例，需要在创建服务实例前，对使用的RAM用户的账号添加相应资源的权限。添加RAM权限的详细操作，请参见[为RAM用户授权](https://help.aliyun.com/document_detail/121945.html)
-。所需权限如下表所示。
-
-| 权限策略名称                              | 备注                          |
-|-------------------------------------|-----------------------------|
-| AliyunECSFullAccess                 | 管理云服务器服务（ECS）的权限            |
-| AliyunVPCFullAccess                 | 管理专有网络（VPC）的权限              |
-| AliyunROSFullAccess                 | 管理资源编排服务（ROS）的权限            |
-| AliyunComputeNestUserFullAccess     | 管理计算巢服务（ComputeNest）的用户侧权限  |
-| AliyunComputeNestSupplierFullAccess | 管理计算巢服务（ComputeNest）的服务商侧权限 |
 
 ## 服务实例计费说明
 
@@ -48,11 +38,6 @@
 - 所选vCPU与内存规格
 - 系统盘类型及容量
 - 公网带宽
-
-计费方式包括：
-
-- 按量付费（小时）
-- 包年包月
 
 目前提供如下套餐：
 
@@ -109,143 +94,8 @@ tar xvf package.tgz
 templates/template.yaml主要由三部分组成
 
 1. Parameters定义需要用户填写的参数，包括付费类型，实例规格和实例密码可用区参数
-
-```
-EcsInstanceType:
- Type: String
- Label:
-   en: Instance Type
-   zh-cn: 实例类型
- AssociationProperty: ALIYUN::ECS::Instance::InstanceType
- AssociationPropertyMetadata:
-   InstanceChargeType: ${PayType}
- AllowedValues:
-   - ecs.c6.large
-   - ecs.c6.xlarge
-   - ecs.c6.2xlarge
-InstancePassword:
- NoEcho: true
- Type: String
- Description:
-   en: Server login password, Length 8-30, must contain three(Capital letters, lowercase letters, numbers, ()`~!@#$%^&*_-+=|{}[]:;'<>,.?/ Special symbol in)
-   zh-cn: 服务器登录密码,长度8-30，必须包含三项（大写字母、小写字母、数字、 ()`~!@#$%^&*_-+=|{}[]:;'<>,.?/ 中的特殊符号）
- AllowedPattern: '^[a-zA-Z0-9-\(\)\`\~\!\@\#\$\%\^\&\*\_\-\+\=\|\{\}\[\]\:\;\<\>\,\.\?\/]*$'
- Label:
-   en: Instance Password
-   zh-cn: 实例密码
- ConstraintDescription:
-   en: Length 8-30, must contain three(Capital letters, lowercase letters, numbers, ()`~!@#$%^&*_-+=|{}[]:;'<>,.?/ Special symbol in)
-   zh-cn: 长度8-30，必须包含三项（大写字母、小写字母、数字、 ()`~!@#$%^&*_-+=|{}[]:;'<>,.?/ 中的特殊符号）
- MinLength: 8
- MaxLength: 30
- AssociationProperty: ALIYUN::ECS::Instance::Password
-# 可用区
-ZoneId:
- Type: String
- AssociationProperty: ALIYUN::ECS::Instance:ZoneId
- Label:
-   en: VSwitch Available Zone
-   zh-cn: 可用区
-VpcId:
- AssociationProperty: ALIYUN::ECS::VPC::VPCId
- Type: String
- Label:
-   en: VPC ID
-   zh-cn: 专有网络VPC实例ID
-# 交换机实例ID
-VSwitchId:
- AssociationProperty: ALIYUN::ECS::VSwitch::VSwitchId
- AssociationPropertyMetadata:
-   VpcId: ${VpcId}
-   ZoneId: ${ZoneId}
- Type: String
- Label:
-   en: VSwitch ID
-   zh-cn: 交换机实例ID
-```
-
 2. Resources定义需要开的资源，包括新开的vpc, vswitch和ecs实例, 以及执行命令的定义
-
-```
-SecurityGroup:
- Type: ALIYUN::ECS::SecurityGroup
- Properties:
-   SecurityGroupName:
-     Ref: ALIYUN::StackName
-   VpcId:
-     Ref: VpcId
-   # 安全组入端口
-   SecurityGroupIngress:
-     - PortRange: 8080/8080
-       Priority: 1
-       SourceCidrIp: 0.0.0.0/0
-       IpProtocol: tcp
-       NicType: internet
-InstanceGroup:
- Type: ALIYUN::ECS::InstanceGroup
- Properties:
-   # 付费类型
-   InstanceChargeType: PostPaid
-   VpcId:
-     Ref: VpcId
-   VSwitchId:
-     Ref: VSwitchId
-   SecurityGroupId:
-     Ref: SecurityGroup
-   ZoneId:
-     Ref: ZoneId
-   ImageId: centos_7_8_x64_20G_alibase_20211130.vhd
-   Password:
-     Ref: InstancePassword
-   InstanceType:
-     Ref: EcsInstanceType
-   SystemDiskCategory: cloud_essd
-   SystemDiskSize: 200
-   InternetMaxBandwidthOut: 1
-   IoOptimized: optimized
-   MaxAmount: 1
-InstallPackage:
- Type: ALIYUN::ECS::RunCommand
- Properties:
-   InstanceIds:
-     Fn::GetAtt:
-     - InstanceGroup
-     - InstanceIds
-   Type: RunShellScript
-   Sync: true
-   Timeout: 3600
-   CommandContent:
-     Fn::Sub:
-       - |
-         #!/bin/bash
-         yum install -y java
-         mkdir -p /home/admin/application
-         cd /home/admin/application
-         wget '{{ computenest::file::springboot }}' -O package.tgz
-         tar xvf package.tgz
-         /bin/bash deploy.sh start
-       - AccountId:
-           Ref: ALIYUN::TenantId
-```
-
 3. Outputs定义需要最终在计算巢概览页中对用户展示的输出
-
-```
-Outputs:
-  VisitUrl:
-    Description:
-      en: VisitUrl.
-      zh-cn: 访问页面。
-    Value:
-      Fn::Sub:
-      - http://${Address}:8080
-      - Address:
-          Fn::Select:
-          - 0
-          - Fn::GetAtt:
-            - InstanceGroup
-            - PublicIps
-```
 
 ## 服务配置
 

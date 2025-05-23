@@ -80,6 +80,13 @@ Service:
           - Start
           - Stop
           - Restart
+  UpgradeMetadata:
+    Description: 升级
+    SupportRollback: true
+    SupportUpgradeFromVersions: [ ]
+    UpgradeComponents:
+      - Configuration
+      - Resource
   ServiceInfo:
     Locale: zh-CN
     ShortDescription: springboot demo

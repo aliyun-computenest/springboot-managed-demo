@@ -101,12 +101,22 @@ Resources:
         Fn::Sub:
           - |
             #!/bin/bash
-            yum install -y java
-            mkdir -p /home/admin/application
-            cd /home/admin/application
-            wget '{{ computenest::file::springboot }}' -O package.tgz
-            tar xvf package.tgz
-            /bin/bash deploy.sh start
+            function stop_application() {
+              if [ -f "/home/admin/application/deploy.sh" ]; then
+                /bin/bash /home/admin/application/deploy.sh stop
+              fi
+            }
+
+            function start_application() {
+              yum install -y java
+              mkdir -p /home/admin/application
+              cd /home/admin/application
+              wget '{{ computenest::file::springboot }}' -O package.tgz
+              tar xvf package.tgz
+              /bin/bash deploy.sh start
+            }
+            stop_application
+            start_application
           - AccountId:
               Ref: ALIYUN::TenantId
 Outputs:

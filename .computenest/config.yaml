@@ -54,8 +54,7 @@ Service:
                     VSwitchId: ${VSwitchId}
       FileArtifactRelation:
         '{{ computenest::file::springboot }}':
-          ArtifactId: ${Artifact.Artifact_1.ArtifactId}
-          ArtifactVersion: ${Artifact.Artifact_1.ArtifactVersion}
+          ArtifactId: artifact-4e82b449817b4947a234
     TemplateConfigs:
       - Name: 单机版
         ArchitectureDiagramUrl: 'docs/architecture.png'
@@ -94,11 +93,3 @@ Service:
     Name: SpringBoot单机托管版
   ShareType: Public
   ApprovalType: Manual
-Artifact:
-  Artifact_1:
-    ArtifactType: File
-    ArtifactName: SpringBootPackage
-    Description: 这是一个使用SpringBoot的测试包
-    ArtifactProperty:
-      RegionId: cn-hangzhou
-      Url: 'resources/artifact_resources/file/package.tgz'

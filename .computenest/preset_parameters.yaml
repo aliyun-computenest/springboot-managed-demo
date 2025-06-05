@@ -30,6 +30,7 @@ Parameters:
   VSwitchId:
     AssociationProperty: ALIYUN::ECS::VSwitch::VSwitchId
     AssociationPropertyMetadata:
+      RegionId: cn-hangzhou
       VpcId: ${VpcId}
       ZoneId: ${ZoneId}
     Type: String

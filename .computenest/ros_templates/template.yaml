@@ -66,6 +66,9 @@ Resources:
           NicType: internet
   InstanceGroup:
     Type: ALIYUN::ECS::InstanceGroup
+    UpdatePolicy:
+      RollingUpdateForOrigInstances:
+        MaxBatchSize: 1
     Properties:
       # 付费类型
       InstanceChargeType: PostPaid
